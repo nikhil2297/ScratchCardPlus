@@ -16,15 +16,22 @@ import android.view.MotionEvent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ScratchLayout extends ConstraintLayout {
-
     private Bitmap bitmap;
+
     private Paint erasePaint;
     private Paint outerPaint;
+
     private Path drawnPath;
+
     private Canvas secondCanvas;
+
     private float mX;
     private float mY;
+
     private int checkCount;
+
+    private int[] pixels;
+
     private CustomListener customListener;
 
     public ScratchLayout(Context context) {
@@ -92,18 +99,18 @@ public class ScratchLayout extends ConstraintLayout {
             case MotionEvent.ACTION_MOVE:
                 touchMove(x, y);
                 secondCanvas.drawPath(drawnPath, erasePaint);
-                if (checkCount < 1) {
-                    checkRevealed();
-                }
                 break;
             case MotionEvent.ACTION_UP:
                 touchUp();
                 secondCanvas.drawPath(drawnPath, erasePaint);
-                if (checkCount < 1) {
-                    checkRevealed();
-                }
                 break;
         }
+
+        //As i am still using async for calculating pixel as for now i find it more smooth then calculating in c++
+        if (checkCount < 1) {
+            checkRevealed();
+        }
+
         secondCanvas.save();
         invalidate();
         return true;
@@ -168,6 +175,46 @@ public class ScratchLayout extends ConstraintLayout {
     public void setBackgroundColor(int color) {
         erasePaint.setColor(color);
         invalidate();
+    }
+
+    static {
+        System.loadLibrary("bitmap-processing");
+    }
+
+    public native boolean calculatePixel(Bitmap bitmap);
+
+    public native boolean getTransparentPercent(int[] pixels);
+
+    //Calculating pixel by passing array of pixel as a parameter
+    private void calculate() {
+        checkCount++;
+
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        if (getTransparentPercent(pixels)) {
+            checkCount--;
+
+            bitmap.eraseColor(Color.TRANSPARENT);
+            secondCanvas.drawColor(Color.TRANSPARENT);
+
+            customListener.revealed();
+        } else {
+            checkCount--;
+        }
+    }
+
+    //Calculating pixel by passing bitmap as a parameter
+    private void getBitmapCalculation() {
+        if (calculatePixel(bitmap)) {
+            checkCount--;
+
+            bitmap.eraseColor(Color.TRANSPARENT);
+            secondCanvas.drawColor(Color.TRANSPARENT);
+
+            customListener.revealed();
+        } else {
+            checkCount--;
+        }
     }
 
 
