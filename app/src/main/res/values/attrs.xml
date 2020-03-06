@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScratchLayout">
+        <attr name="scratch_on" format="color|reference"/>
+        <attr name="erase_stroke_width" format="integer"/>
+        <attr name="scratch_type" format="enum">
+            <enum name="color" value="1"/>
+            <enum name="drawable" value="2"/>
+        </attr>
+        <attr name="reveal_percent" format="integer"/>
+    </declare-styleable>
+</resources>

@@ -7,8 +7,12 @@
     tools:context=".MainActivity">
 
     <com.scratchcard.ScratchLayout
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:scratch_on="@drawable/ic_launcher_background"
+        app:scratch_type="drawable"
+        app:erase_stroke_width="50"
+        app:reveal_percent="40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,6 +23,7 @@
             android:layout_height="wrap_content"
             android:text="Am I visible"
             android:textSize="24sp"
+            android:padding="40dp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
