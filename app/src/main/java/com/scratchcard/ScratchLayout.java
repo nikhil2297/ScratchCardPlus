@@ -41,6 +41,8 @@ public class ScratchLayout extends ConstraintLayout {
 
     private Context context;
 
+    private int pixels[];
+
     //ScratchCard Layout Attr
     private int scratchRef;
     private int scratchType;
@@ -53,7 +55,7 @@ public class ScratchLayout extends ConstraintLayout {
     private int defEraseStrokeWidth = 40;
     private int defRevealPercent = 40;
 
-    private CustomListener customListener;
+    private RevealListener revealListener;
 
     public ScratchLayout(Context context) {
         super(context);
@@ -234,8 +236,8 @@ public class ScratchLayout extends ConstraintLayout {
                     bitmap.eraseColor(Color.TRANSPARENT);
                     secondCanvas.drawColor(Color.TRANSPARENT);
 
-                    if (customListener != null) {
-                        customListener.revealed();
+                    if (revealListener != null) {
+                        revealListener.revealed();
                     }
                 } else {
                     checkCount--;
@@ -270,7 +272,7 @@ public class ScratchLayout extends ConstraintLayout {
             bitmap.eraseColor(Color.TRANSPARENT);
             secondCanvas.drawColor(Color.TRANSPARENT);
 
-            customListener.revealed();
+            revealListener.revealed();
         } else {
             checkCount--;
         }
@@ -284,7 +286,7 @@ public class ScratchLayout extends ConstraintLayout {
             bitmap.eraseColor(Color.TRANSPARENT);
             secondCanvas.drawColor(Color.TRANSPARENT);
 
-            customListener.revealed();
+            revealListener.revealed();
         } else {
             checkCount--;
         }
@@ -332,11 +334,11 @@ public class ScratchLayout extends ConstraintLayout {
         initSecondCanvas();
     }
 
-    public void setOnCustomListener(CustomListener listener) {
-        this.customListener = listener;
+    public void setOnRevealListener(RevealListener listener) {
+        this.revealListener = listener;
     }
 
-    public interface CustomListener {
+    public interface RevealListener {
         void revealed();
     }
 }
