@@ -35,7 +35,8 @@ app:scratch_type = Here you have to add type for drawable or color
         
         //Any view you want to add
 
-    </com.scratchcard.ScratchLayout>```
+    </com.scratchcard.ScratchLayout>
+```
 
 **There is RevealListener :**
 
