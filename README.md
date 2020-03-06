@@ -7,18 +7,18 @@ There are simple attr that you should know
 
 app:erase_stroke_width = Erase brush width 
 
-***Note : Assume brush as you finger :stuck_out_tongue_closed_eyes:***
+**Note : Assume brush as you finger :stuck_out_tongue_closed_eyes:**
 
 app:reveal_percent= When give value is visible on your view is reveal the view
 
-***The moste important one you have add these two attr in all your scratchcard layout 
+**The moste important one you have add these two attr in all your scratchcard layout**
 
 app:scratch_on = Here you can add either a drawable or color
 
 app:scratch_type = Here you have to add type for drawable or color
 
 
-***Example**
+**Example**
 
 ```
 <com.scratchcard.ScratchLayout
@@ -36,5 +36,4 @@ app:scratch_type = Here you have to add type for drawable or color
         //Any view you want to add
 
     </com.scratchcard.ScratchLayout>
-    ```
     
