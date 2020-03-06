@@ -11,7 +11,7 @@ app:erase_stroke_width = Erase brush width
 
 app:reveal_percent= When give value is visible on your view is reveal the view
 
-**The moste important one you have add these two attr in all your scratchcard layout**
+**The most important one you have add these two attr in all your scratchcard layout**
 
 app:scratch_on = Here you can add either a drawable or color
 
@@ -20,7 +20,7 @@ app:scratch_type = Here you have to add type for drawable or color
 
 **Example**
 
-```
+```xml
 <com.scratchcard.ScratchLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,3 +37,4 @@ app:scratch_type = Here you have to add type for drawable or color
 
     </com.scratchcard.ScratchLayout>
     
+    ```
