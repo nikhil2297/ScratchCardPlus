@@ -17,6 +17,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -39,8 +40,6 @@ public class ScratchLayout extends ConstraintLayout {
     private int checkCount;
 
     private Context context;
-
-    private int[] pixels;
 
     //ScratchCard Layout Attr
     private int scratchRef;
@@ -81,16 +80,16 @@ public class ScratchLayout extends ConstraintLayout {
 
     }
 
-    private void init(AttributeSet set){
+    private void init(AttributeSet set) {
         setWillNotDraw(false);
 
         if (set != null) {
             TypedArray ta = context.obtainStyledAttributes(set, R.styleable.ScratchLayout);
             scratchType = ta.getInt(R.styleable.ScratchLayout_scratch_type, defScratchType);
 
-            if (scratchType == SCRATCH_TYPE_COLOR){
+            if (scratchType == SCRATCH_TYPE_COLOR) {
                 scratchRef = ta.getColor(R.styleable.ScratchLayout_scratch_on, defScratchRef);
-            }else if (scratchType == SCRATCH_TYPE_DRAWABLE){
+            } else if (scratchType == SCRATCH_TYPE_DRAWABLE) {
                 scratchRef = ta.getResourceId(R.styleable.ScratchLayout_scratch_on, defScratchRef);
             }
 
@@ -104,7 +103,7 @@ public class ScratchLayout extends ConstraintLayout {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onDrawForeground(Canvas canvas) {
-       // secondCanvas.setBitmap();
+        // secondCanvas.setBitmap();
         canvas.drawBitmap(bitmap, 0, 0, outerPaint);
 
         super.onDrawForeground(canvas);
@@ -114,33 +113,14 @@ public class ScratchLayout extends ConstraintLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
-        if (erasePaint == null) {
-            erasePaint = new Paint();
-            erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-            erasePaint.setDither(true);
-            erasePaint.setAntiAlias(true);
-            erasePaint.setStyle(Paint.Style.STROKE);
-            erasePaint.setStrokeCap(Paint.Cap.ROUND);
-            erasePaint.setStrokeJoin(Paint.Join.ROUND);
-            erasePaint.setStrokeWidth(40);
-        }
+        initErasePaint();
 
         if (secondCanvas == null) {
             bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
             secondCanvas = new Canvas(bitmap);
-
-            Rect rectBound = secondCanvas.getClipBounds();
-
-            if (scratchType == SCRATCH_TYPE_DRAWABLE){
-                Drawable customImage = getResources().getDrawable(scratchRef);
-                customImage.setBounds(rectBound);
-                customImage.draw(secondCanvas);
-            }else if (scratchType == SCRATCH_TYPE_COLOR){
-                secondCanvas.drawColor(scratchRef);
-            }
         }
 
-
+        initSecondCanvas();
 
         if (drawnPath == null) {
             drawnPath = new Path();
@@ -151,6 +131,32 @@ public class ScratchLayout extends ConstraintLayout {
         }
 
         super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    private void initErasePaint(){
+        if (erasePaint == null) {
+            erasePaint = new Paint();
+        }
+
+        erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        erasePaint.setDither(true);
+        erasePaint.setAntiAlias(true);
+        erasePaint.setStyle(Paint.Style.STROKE);
+        erasePaint.setStrokeCap(Paint.Cap.ROUND);
+        erasePaint.setStrokeJoin(Paint.Join.ROUND);
+        erasePaint.setStrokeWidth(40);
+    }
+
+    private void initSecondCanvas(){
+        Rect rectBound = secondCanvas.getClipBounds();
+
+        if (scratchType == SCRATCH_TYPE_DRAWABLE) {
+            Drawable customImage = getResources().getDrawable(scratchRef);
+            customImage.setBounds(rectBound);
+            customImage.draw(secondCanvas);
+        } else if (scratchType == SCRATCH_TYPE_COLOR) {
+            secondCanvas.drawColor(scratchRef);
+        }
     }
 
     @Override
@@ -284,6 +290,47 @@ public class ScratchLayout extends ConstraintLayout {
         }
     }
 
+    public int getScratchRef() {
+        return scratchRef;
+    }
+
+    public int getScratchType() {
+        return scratchType;
+    }
+
+    public int getEraseStrokeWidth() {
+        return eraseStrokeWidth;
+    }
+
+    public void setEraseStrokeWidth(int eraseStrokeWidth) {
+        this.eraseStrokeWidth = eraseStrokeWidth;
+
+        initErasePaint();
+    }
+
+    public int getRevealPercent() {
+        return revealPercent;
+    }
+
+    public void setRevealPercent(int revealPercent) {
+        this.revealPercent = revealPercent;
+    }
+
+    public void setScratchRefId(@DrawableRes int refId) {
+        scratchType = SCRATCH_TYPE_DRAWABLE;
+
+        scratchRef = refId;
+
+        initSecondCanvas();
+    }
+
+    public void setScratchTypeColor(int color) {
+        scratchType = SCRATCH_TYPE_COLOR;
+
+        scratchRef = color;
+
+        initSecondCanvas();
+    }
 
     public void setOnCustomListener(CustomListener listener) {
         this.customListener = listener;
